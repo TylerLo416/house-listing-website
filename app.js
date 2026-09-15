@@ -20,7 +20,6 @@ const qualitySelect = $('#media-quality');
 const caption = $('#tour-caption');
 const heroPhoto = $('#hero-photo');
 const mediaStatus = $('#media-status');
-const dataToggle = $('#low-data');
 const savedQuality = storage.get('tour-quality');
 let preference = ['auto', '1080', '720', '540', 'photos'].includes(savedQuality) ? savedQuality : 'auto';
 let currentQuality = null;
@@ -29,8 +28,6 @@ let resumeAt = 0;
 let wantsPlayback = false;
 let stallTimer;
 let loading = false;
-let lowDataOverride = storage.get('lighter-photos');
-let lowData = lowDataOverride === null ? policy().lowData : lowDataOverride === 'true';
 let photos = [];
 let category = 'all';
 let shown = 12;
@@ -38,26 +35,15 @@ let selectedPhoto = 0;
 let lastPhotoButton = null;
 const lightbox = $('#lightbox');
 qualitySelect.value = preference;
-dataToggle.checked = lowData;
 
 function setImageQuality(image, photo, large = false) {
-  if (lowData) {
-    image.removeAttribute('srcset');
-    image.removeAttribute('sizes');
-    image.src = photoSource(photo, 400);
-  } else {
-    image.sizes = large ? '(max-width: 800px) 100vw, 65vw' : '(max-width: 800px) 46vw, 30vw';
-    image.srcset = [400, 800, 1600].map(width => `${photoSource(photo, width)} ${width}w`).join(', ');
-    image.src = photoSource(photo, large ? 1600 : 800);
-  }
+  image.sizes = large ? '(max-width: 800px) 100vw, 65vw' : '(max-width: 800px) 46vw, 30vw';
+  image.srcset = [400, 800, 1600].map(width => `${photoSource(photo, width)} ${width}w`).join(', ');
+  image.src = photoSource(photo, large ? 1600 : 800);
 }
 
-function updateImages() {
-  setImageQuality(heroPhoto, { id: 'twilight-1' }, true);
-  document.querySelectorAll('img[data-photo]').forEach(image => setImageQuality(image, { id: image.dataset.photo }, image.dataset.feature !== 'false'));
-  if (lightbox.open) renderLightbox();
-}
-updateImages();
+setImageQuality(heroPhoto, { id: 'twilight-1' }, true);
+document.querySelectorAll('img[data-photo]').forEach(image => setImageQuality(image, { id: image.dataset.photo }, true));
 
 function clearStallWatch() {
   clearTimeout(stallTimer);
@@ -191,18 +177,10 @@ qualitySelect.addEventListener('change', () => {
   const keepPlaying = wantsPlayback || currentQuality === 'photos' || currentQuality === null;
   startVideo(next, keepPlaying);
 });
-dataToggle.addEventListener('change', () => {
-  lowData = dataToggle.checked;
-  lowDataOverride = String(lowData);
-  storage.set('lighter-photos', lowDataOverride);
-  updateImages();
-});
-
 connection?.addEventListener('change', () => {
   const next = policy();
-  if (lowDataOverride === null) { lowData = next.lowData; dataToggle.checked = lowData; updateImages(); }
   if (preference !== 'auto') return;
-  if (next.quality === 'photos') usePhotos(next.lowData ? 'Data saver · Photos first' : 'Slow connection · Showing photos');
+  if (next.quality === 'photos') usePhotos(next.saveData ? 'Data saver · Photos first' : 'Slow connection · Showing photos');
   // A better connection takes effect on the next deliberate play. Avoid surprises.
   else if (currentQuality !== 'photos' && Number(next.quality) < Number(currentQuality)) startVideo(next.quality, wantsPlayback);
 });
@@ -219,7 +197,7 @@ if ('IntersectionObserver' in window) {
 }
 
 const initialPolicy = policy();
-if (preference === 'photos' || (preference === 'auto' && initialPolicy.quality === 'photos')) usePhotos(initialPolicy.lowData ? 'Data saver · Photos first' : 'Photo mode · Browse at your pace');
+if (preference === 'photos' || (preference === 'auto' && initialPolicy.quality === 'photos')) usePhotos(initialPolicy.saveData ? 'Data saver · Photos first' : 'Photo mode · Browse at your pace');
 else if (initialPolicy.autoplay) startVideo(preference === 'auto' ? initialPolicy.quality : preference, true);
 else mediaStatus.textContent = 'Home tour · Press play to explore';
 
@@ -287,7 +265,6 @@ function renderGallery(append = false) {
     image.height = photo.height;
     image.alt = photo.alt;
     image.dataset.photo = photo.id;
-    image.dataset.feature = 'false';
     setImageQuality(image, photo);
     image.addEventListener('error', () => {
       if (button.querySelector('.photo-error')) return;
@@ -345,11 +322,11 @@ function renderLightbox() {
   const image = $('#lightbox-image');
   image.alt = photo.alt;
   image.removeAttribute('srcset');
-  image.src = photoSource(photo, lowData ? 400 : 1600);
+  image.src = photoSource(photo, 1600);
   $('#lightbox-category').textContent = categoryName(photo.category);
   $('#lightbox-counter').textContent = `${selectedPhoto + 1} / ${filtered.length}`;
   $('#lightbox-caption').textContent = photo.alt;
-  $('#lightbox-note').textContent = photo.staged ? 'Virtually staged · Furniture shown is illustrative.' : lowData ? 'Lighter photos enabled' : 'Use arrow keys or swipe to explore';
+  $('#lightbox-note').textContent = photo.staged ? 'Virtually staged · Furniture shown is illustrative.' : 'Use arrow keys or swipe to explore';
   $('#previous-photo').disabled = filtered.length < 2;
   $('#next-photo').disabled = filtered.length < 2;
 }
@@ -359,7 +336,7 @@ function navigatePhoto(direction) {
   selectedPhoto = (selectedPhoto + direction + count) % count;
   renderLightbox();
 }
-$('#lightbox-image').addEventListener('error', () => { $('#lightbox-caption').textContent = 'This photo could not load. Try the next photo or enable lighter photos.'; });
+$('#lightbox-image').addEventListener('error', () => { $('#lightbox-caption').textContent = 'This photo could not load. Try the next photo.'; });
 $('#previous-photo').addEventListener('click', () => navigatePhoto(-1));
 $('#next-photo').addEventListener('click', () => navigatePhoto(1));
 $('#close-lightbox').addEventListener('click', () => lightbox.close());

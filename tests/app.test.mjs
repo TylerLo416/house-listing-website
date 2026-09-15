@@ -82,21 +82,20 @@ test('gallery filters, keyboard tabs, pagination, modal navigation and staging l
     const first = $('#lightbox-image').src;
     $('#next-photo').click();
     assert.notEqual($('#lightbox-image').src, first);
-    app.change('#low-data', true);
-    assert.match($('#lightbox-image').src, /-400.webp$/);
-    assert.equal($('#gallery-grid img').hasAttribute('srcset'), false);
+    assert.match($('#lightbox-image').src, /-1600.webp$/);
+    assert.ok($('#gallery-grid img').hasAttribute('srcset'));
     $('#close-lightbox').click();
     assert.equal($('#lightbox').open, false);
     assert.equal(app.document.activeElement, $('#gallery-grid button'));
   } finally { app.close(); }
 });
 
-test('Save-Data loads only small photos until the visitor explicitly starts a video', async () => {
+test('Save-Data preserves sharp photos and waits for the visitor to start a video', async () => {
   const app = await setup({ connection: { saveData: true } });
   try {
     assert.equal(app.video.hasAttribute('src'), false);
-    assert.equal(app.document.querySelector('#hero-photo').hasAttribute('srcset'), false);
-    assert.equal(app.document.querySelector('#low-data').checked, true);
+    assert.ok(app.document.querySelector('#hero-photo').hasAttribute('srcset'));
+    assert.equal(app.document.querySelector('#low-data'), null);
     app.document.querySelector('#play-tour').click();
     assert.match(app.video.src, /tour-540.mp4$/);
     app.fire('loadedmetadata');
@@ -118,7 +117,7 @@ test('unknown bandwidth starts at 1080p and sustained buffering falls back throu
     assert.match(app.video.src, /tour-1080.mp4$/);
     app.stall();
     assert.match(app.video.src, /tour-720.mp4$/);
-    assert.equal(app.document.querySelector('#low-data').checked, false, 'Video buffering must not lower photo quality');
+    assert.equal(app.document.querySelector('#low-data'), null);
     assert.ok(app.document.querySelector('#gallery-grid img').hasAttribute('srcset'));
     app.stall();
     assert.match(app.video.src, /tour-540.mp4$/);
@@ -136,14 +135,14 @@ test('slow network estimates keep photos sharp while reducing or disabling video
     const app = await setup({ connection });
     try {
       const $ = selector => app.document.querySelector(selector);
-      assert.equal($('#low-data').checked, false);
+      assert.equal($('#low-data'), null);
       assert.ok($('#hero-photo').hasAttribute('srcset'));
       assert.ok($('#gallery-grid img').hasAttribute('srcset'));
       $('#gallery-grid button').click();
       assert.match($('#lightbox-image').src, /-1600.webp$/);
       app.network.downlink = 0.1;
       app.network.dispatchEvent(new app.window.Event('change'));
-      assert.equal($('#low-data').checked, false);
+      assert.equal($('#low-data'), null);
       assert.match($('#lightbox-image').src, /-1600.webp$/);
     } finally { app.close(); }
   }
@@ -154,18 +153,18 @@ test('Photos only preserves full photo quality on selection and after reload', a
     const app = await setup({ savedPreferences });
     try {
       const $ = selector => app.document.querySelector(selector);
-      assert.equal($('#low-data').checked, false);
+      assert.equal($('#low-data'), null);
       app.change('#media-quality', 'photos');
       assert.equal(app.video.hasAttribute('src'), false);
-      assert.equal($('#low-data').checked, false);
+      assert.equal($('#low-data'), null);
       $('#gallery-grid button').click();
       assert.match($('#lightbox-image').src, /-1600.webp$/);
     } finally { app.close(); }
   }
 });
 
-test('an explicit full-quality photo preference survives video stalls and network changes', async () => {
-  const app = await setup({ connection: { saveData: true }, savedPreferences: { 'lighter-photos': 'false' } });
+test('removed photo preferences cannot lower quality during stalls or network changes', async () => {
+  const app = await setup({ connection: { saveData: true }, savedPreferences: { 'lighter-photos': 'true' } });
   try {
     const $ = selector => app.document.querySelector(selector);
     app.network.saveData = false;
@@ -173,13 +172,12 @@ test('an explicit full-quality photo preference survives video stalls and networ
     app.stall();
     app.network.saveData = true;
     app.network.dispatchEvent(new app.window.Event('change'));
-    assert.equal($('#low-data').checked, false);
+    assert.equal($('#low-data'), null);
     assert.ok($('#gallery-grid img').hasAttribute('srcset'));
     $('#gallery-grid button').click();
     assert.match($('#lightbox-image').src, /-1600.webp$/);
-    app.change('#low-data', true);
-    assert.match($('#lightbox-image').src, /-400.webp$/);
-    assert.equal($('#gallery-grid img').hasAttribute('srcset'), false);
+    assert.match($('#lightbox-image').src, /-1600.webp$/);
+    assert.ok($('#gallery-grid img').hasAttribute('srcset'));
   } finally { app.close(); }
 });
 

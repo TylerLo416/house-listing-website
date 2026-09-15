@@ -61,11 +61,11 @@ Sources checked September 15, 2026:
 ## Video and photo behavior
 
 - **Auto:** 1080p on a good or unknown connection; 720p below 5 Mbps; 540p below 2 Mbps or on an effective 3G connection.
-- **Photos first:** Save-Data, 2G, or bandwidth below 0.8 Mbps prevents the initial video request. Pressing Play explicitly starts the 540p tour. Only explicit Save-Data or the “Lighter photos” switch requests small photos; slow bandwidth estimates preserve responsive photos and the 1600px enlarged view.
-- **Buffering fallback:** In Auto, sustained loading/buffering steps down from 1080p → 720p → 540p → photos, including on browsers that do not expose network estimates. Video buffering and “Photos only” never reduce still-photo resolution or override the visitor’s photo preference.
+- **Photos first:** Save-Data, 2G, or bandwidth below 0.8 Mbps prevents the initial video request. Pressing Play explicitly starts the 540p tour. Photos always use responsive images and the 1600px enlarged view, including with Save-Data enabled.
+- **Buffering fallback:** In Auto, sustained loading/buffering steps down from 1080p → 720p → 540p → photos, including on browsers that do not expose network estimates. Video buffering and “Photos only” never reduce still-photo resolution.
 - **Manual controls:** Auto, 1080p, 720p, 540p, or Photos only. Changing quality preserves playback position. Native video controls provide pause, seek, volume and fullscreen. Photos only aborts the video request.
 - **Motion and autoplay:** The tour starts muted and inline when allowed. Reduced-motion preference suppresses autoplay. If autoplay is blocked, a play button is shown. Scrolling the tour offscreen or hiding the tab pauses it.
-- **Images:** All 117 supplied photographs are converted to 400px, 800px and 1600px WebP. Responsive images, lazy loading and a manual “Lighter photos” switch limit downloads. Five virtual staging images are labeled in cards and the viewer.
+- **Images:** All 117 supplied photographs are converted to 400px, 800px and 1600px WebP. Responsive images and lazy loading limit downloads; enlarged photos always use 1600px files. Five virtual staging images are labeled in cards and the viewer.
 - **Gallery:** Room categories, load-more pagination, a full-screen viewer, arrow-key navigation, touch swipes and focus restoration. Preferences persist only in the current browser tab's session.
 
 Connection quality is an estimate, not direct Wi-Fi signal measurement. Some browsers do not expose it; the buffering fallback and manual controls cover that case. See [MDN's Network Information documentation](https://developer.mozilla.org/en-US/docs/Web/API/NetworkInformation).

@@ -8,9 +8,8 @@ export function chooseMediaPolicy(connection = {}, reducedMotion = false) {
   const moderate = knownSpeed && downlink < 5;
   return {
     quality: saveData || verySlow ? 'photos' : slow ? '540' : moderate ? '720' : '1080',
-    // Bandwidth estimates guide video playback, not still-photo resolution.
-    // Only an explicit browser data-saving preference enables lighter photos.
-    lowData: saveData,
+    // Data-saving preferences guide video playback only.
+    saveData,
     autoplay: !saveData && !verySlow && !reducedMotion,
   };
 }
