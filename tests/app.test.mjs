@@ -7,9 +7,10 @@ const html = await fs.readFile(new URL('../index.html', import.meta.url), 'utf8'
 const manifest = JSON.parse(await fs.readFile(new URL('../assets/photos.json', import.meta.url), 'utf8'));
 let run = 0;
 
-async function setup({ connection = {}, reducedMotion = false } = {}) {
+async function setup({ connection = {}, reducedMotion = false, savedPreferences = {} } = {}) {
   const dom = new JSDOM(html, { url: 'http://localhost/', pretendToBeVisual: true });
   const { window } = dom;
+  for (const [key, value] of Object.entries(savedPreferences)) window.sessionStorage.setItem(key, value);
   const network = Object.assign(new window.EventTarget(), connection);
   Object.defineProperty(window.navigator, 'connection', { value: network });
   const mediaPreference = Object.assign(new window.EventTarget(), { matches: reducedMotion });
@@ -117,11 +118,68 @@ test('unknown bandwidth starts at 1080p and sustained buffering falls back throu
     assert.match(app.video.src, /tour-1080.mp4$/);
     app.stall();
     assert.match(app.video.src, /tour-720.mp4$/);
+    assert.equal(app.document.querySelector('#low-data').checked, false, 'Video buffering must not lower photo quality');
+    assert.ok(app.document.querySelector('#gallery-grid img').hasAttribute('srcset'));
     app.stall();
     assert.match(app.video.src, /tour-540.mp4$/);
+    assert.ok(app.document.querySelector('#hero-photo').hasAttribute('srcset'));
     app.stall();
     assert.equal(app.video.hasAttribute('src'), false);
     assert.match(app.document.querySelector('#media-status').textContent, /Slow connection/);
+    app.document.querySelector('#gallery-grid button').click();
+    assert.match(app.document.querySelector('#lightbox-image').src, /-1600.webp$/);
+  } finally { app.close(); }
+});
+
+test('slow network estimates keep photos sharp while reducing or disabling video', async () => {
+  for (const connection of [{ effectiveType: '3g', downlink: 1.5 }, { effectiveType: '2g', downlink: 0.2 }]) {
+    const app = await setup({ connection });
+    try {
+      const $ = selector => app.document.querySelector(selector);
+      assert.equal($('#low-data').checked, false);
+      assert.ok($('#hero-photo').hasAttribute('srcset'));
+      assert.ok($('#gallery-grid img').hasAttribute('srcset'));
+      $('#gallery-grid button').click();
+      assert.match($('#lightbox-image').src, /-1600.webp$/);
+      app.network.downlink = 0.1;
+      app.network.dispatchEvent(new app.window.Event('change'));
+      assert.equal($('#low-data').checked, false);
+      assert.match($('#lightbox-image').src, /-1600.webp$/);
+    } finally { app.close(); }
+  }
+});
+
+test('Photos only preserves full photo quality on selection and after reload', async () => {
+  for (const savedPreferences of [{}, { 'tour-quality': 'photos' }]) {
+    const app = await setup({ savedPreferences });
+    try {
+      const $ = selector => app.document.querySelector(selector);
+      assert.equal($('#low-data').checked, false);
+      app.change('#media-quality', 'photos');
+      assert.equal(app.video.hasAttribute('src'), false);
+      assert.equal($('#low-data').checked, false);
+      $('#gallery-grid button').click();
+      assert.match($('#lightbox-image').src, /-1600.webp$/);
+    } finally { app.close(); }
+  }
+});
+
+test('an explicit full-quality photo preference survives video stalls and network changes', async () => {
+  const app = await setup({ connection: { saveData: true }, savedPreferences: { 'lighter-photos': 'false' } });
+  try {
+    const $ = selector => app.document.querySelector(selector);
+    app.network.saveData = false;
+    app.change('#media-quality', 'auto');
+    app.stall();
+    app.network.saveData = true;
+    app.network.dispatchEvent(new app.window.Event('change'));
+    assert.equal($('#low-data').checked, false);
+    assert.ok($('#gallery-grid img').hasAttribute('srcset'));
+    $('#gallery-grid button').click();
+    assert.match($('#lightbox-image').src, /-1600.webp$/);
+    app.change('#low-data', true);
+    assert.match($('#lightbox-image').src, /-400.webp$/);
+    assert.equal($('#gallery-grid img').hasAttribute('srcset'), false);
   } finally { app.close(); }
 });
 

@@ -12,9 +12,11 @@ test('bandwidth, Save-Data and reduced motion choose appropriate media', () => {
   assert.equal(chooseMediaPolicy({ downlink: 3 }).quality, '720');
   assert.equal(chooseMediaPolicy({ effectiveType: '3g' }).quality, '540');
   assert.equal(chooseMediaPolicy({ downlink: 1.5 }).quality, '540');
-  for (const connection of [{ saveData: true }, { effectiveType: '2g' }, { effectiveType: 'slow-2g' }, { downlink: 0.2 }, { downlink: 0 }]) {
-    assert.deepEqual(chooseMediaPolicy(connection), { quality: 'photos', lowData: true, autoplay: false });
+  assert.deepEqual(chooseMediaPolicy({ saveData: true }), { quality: 'photos', lowData: true, autoplay: false });
+  for (const connection of [{ effectiveType: '2g' }, { effectiveType: 'slow-2g' }, { downlink: 0.2 }, { downlink: 0 }]) {
+    assert.deepEqual(chooseMediaPolicy(connection), { quality: 'photos', lowData: false, autoplay: false });
   }
+  assert.equal(chooseMediaPolicy({ effectiveType: '3g', downlink: 1.5 }).lowData, false);
   assert.equal(chooseMediaPolicy({}, true).autoplay, false);
   assert.equal(chooseMediaPolicy({}, true).quality, '1080');
   assert.equal(chooseMediaPolicy({ downlink: NaN }).quality, '1080');

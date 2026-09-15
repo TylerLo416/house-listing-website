@@ -30,7 +30,7 @@ let wantsPlayback = false;
 let stallTimer;
 let loading = false;
 let lowDataOverride = storage.get('lighter-photos');
-let lowData = lowDataOverride === null ? policy().lowData || preference === 'photos' : lowDataOverride === 'true';
+let lowData = lowDataOverride === null ? policy().lowData : lowDataOverride === 'true';
 let photos = [];
 let category = 'all';
 let shown = 12;
@@ -87,9 +87,7 @@ function watchForStall(delay = 9000) {
     stallTimer = null;
     if (!wantsPlayback || document.hidden || preference !== 'auto') return;
     const lower = nextLowerQuality(currentQuality);
-    lowData = true;
-    dataToggle.checked = true;
-    updateImages();
+    // A slow video download must not replace sharp photos with thumbnails.
     if (lower === 'photos') usePhotos('Slow connection · Showing photos');
     else startVideo(lower, true, `Adjusting to ${lower}p for smoother playback`);
   }, delay);
@@ -189,11 +187,6 @@ $('#play-tour').addEventListener('click', () => {
 qualitySelect.addEventListener('change', () => {
   preference = qualitySelect.value;
   storage.set('tour-quality', preference);
-  if (preference === 'photos' && lowDataOverride === null) {
-    lowData = true;
-    dataToggle.checked = true;
-    updateImages();
-  }
   const next = preference === 'auto' ? policy().quality : preference;
   const keepPlaying = wantsPlayback || currentQuality === 'photos' || currentQuality === null;
   startVideo(next, keepPlaying);
@@ -207,9 +200,9 @@ dataToggle.addEventListener('change', () => {
 
 connection?.addEventListener('change', () => {
   const next = policy();
-  if (lowDataOverride === null) { lowData = next.lowData || preference === 'photos'; dataToggle.checked = lowData; updateImages(); }
+  if (lowDataOverride === null) { lowData = next.lowData; dataToggle.checked = lowData; updateImages(); }
   if (preference !== 'auto') return;
-  if (next.quality === 'photos') usePhotos('Low-data connection · Showing photos');
+  if (next.quality === 'photos') usePhotos(next.lowData ? 'Data saver · Photos first' : 'Slow connection · Showing photos');
   // A better connection takes effect on the next deliberate play. Avoid surprises.
   else if (currentQuality !== 'photos' && Number(next.quality) < Number(currentQuality)) startVideo(next.quality, wantsPlayback);
 });
@@ -226,7 +219,7 @@ if ('IntersectionObserver' in window) {
 }
 
 const initialPolicy = policy();
-if (preference === 'photos' || (preference === 'auto' && initialPolicy.quality === 'photos')) usePhotos('Low-data mode · Photos first');
+if (preference === 'photos' || (preference === 'auto' && initialPolicy.quality === 'photos')) usePhotos(initialPolicy.lowData ? 'Data saver · Photos first' : 'Photo mode · Browse at your pace');
 else if (initialPolicy.autoplay) startVideo(preference === 'auto' ? initialPolicy.quality : preference, true);
 else mediaStatus.textContent = 'Home tour · Press play to explore';
 
