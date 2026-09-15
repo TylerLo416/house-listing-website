@@ -1,0 +1,10 @@
+{
+  "submittedAt": "2026-09-15T06:06:43.681Z",
+  "endpoint": "https://api.indexnow.org/indexnow",
+  "urls": [
+    "https://7741greenlake.netlify.app/"
+  ],
+  "status": 202,
+  "outcome": "URL received; ownership validation pending",
+  "responseBody": ""
+}

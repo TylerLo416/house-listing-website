@@ -1,0 +1,54 @@
+{
+  "checkedAt": "2026-09-15T06:06:46.207Z",
+  "site": "https://7741greenlake.netlify.app/",
+  "results": [
+    {
+      "path": "/",
+      "status": 200,
+      "contentType": "text/html; charset=UTF-8"
+    },
+    {
+      "path": "share.js",
+      "status": 200,
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "path": "listing-config.js",
+      "status": 200,
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "path": "robots.txt",
+      "status": 200,
+      "contentType": "text/plain; charset=UTF-8"
+    },
+    {
+      "path": "sitemap.xml",
+      "status": 200,
+      "contentType": "application/xml"
+    },
+    {
+      "path": "property-summary.html",
+      "status": 200,
+      "contentType": "text/html; charset=UTF-8"
+    },
+    {
+      "path": "assets/photos/twilight-1-1600.webp",
+      "status": 200,
+      "contentType": "image/webp"
+    },
+    {
+      "path": "basefiles/contactinfo",
+      "status": 404
+    },
+    {
+      "path": "marketing/draft-posts.md",
+      "status": 404
+    },
+    {
+      "path": ".git/config",
+      "status": 404
+    }
+  ],
+  "videoRangeStatus": 206
+}
