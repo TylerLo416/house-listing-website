@@ -1,6 +1,21 @@
 # 7741 Green Lake — home for sale
 
+[**View the home, photos and video tour**](https://7741greenlake.netlify.app/)
+
+7741 1st Avenue NE, Seattle, WA 98115. Green Lake duplex / multi-family property, offered at **$1,079,000**. Whole-property figures: **4 bedrooms · 3 bathrooms · 2,160 sq ft**. [Contact the seller for a showing](https://7741greenlake.netlify.app/#contact).
+
 A responsive, self-hosted website using plain HTML, CSS and JavaScript. There is no framework, hosted service, database or runtime dependency to deploy.
+
+## Promotion and search discovery
+
+- `npm run build` refreshes the canonical URL, search description, Open Graph/X text, structured listing data, robots.txt, an image sitemap, a printable property summary and campaign copy from `listing-config.js`.
+- [Campaign drafts](marketing/draft-posts.md) include Facebook/Nextdoor, Instagram, LinkedIn, Pinterest, Craigslist, YouTube, short-post and email copy. These files are not copied to the public website and are not published to social accounts by the build.
+- Visitors can use native sharing, copy a link, email the home or open the [printable summary](https://7741greenlake.netlify.app/property-summary.html).
+- Shared URLs include campaign source labels. No analytics service or advertising pixel is installed, so these parameters alone do not report traffic or leads.
+- `netlify.toml` publishes only `dist/`. Keep that publish directory to exclude source documents and broker-only information.
+- After a successful production deployment, `npm run submit:indexnow` verifies the live ownership file and updated page, then notifies IndexNow once. It saves the actual response to `marketing/indexnow-receipt.json`. A received submission does not guarantee crawling or indexing. See [IndexNow documentation](https://www.indexnow.org/documentation).
+- Google discovers the sitemap through robots.txt. A direct Google indexing request requires a verified Search Console account; a sitemap is not proof of Google indexing. See [Google’s crawl-request guidance](https://developers.google.com/search/docs/crawling-indexing/ask-google-to-recrawl).
+- Update the price and sale status before reusing campaign copy. Rebuild and redeploy changes; notify IndexNow after significant updates rather than repeatedly submitting an unchanged page.
 
 ## Run locally
 
@@ -35,7 +50,7 @@ To update the asking price, edit `listing-config.js`:
 askingPrice: 1079000,
 ```
 
-Keep the static asking price in `index.html` in sync so it also displays correctly before JavaScript loads. `scopeNote` contains the property type and MLS number. Contact links and page copy are in `index.html`; styles are in `styles.css`. Re-run `npm run build` after changes.
+The build updates the static asking price in `index.html`, metadata and promotional copy so they agree before JavaScript loads. `scopeNote` contains the property type and MLS number. Contact links and other page copy are in `index.html`; styles are in `styles.css`. Re-run `npm run build` after changes.
 
 Sources checked September 15, 2026:
 

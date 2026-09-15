@@ -9,6 +9,8 @@
     "build": "node scripts/build.mjs",
     "preview": "node scripts/serve.mjs dist",
     "media": "node scripts/prepare-media.mjs",
+    "promotion": "node scripts/prepare-promotion.mjs",
+    "submit:indexnow": "node scripts/submit-indexnow.mjs",
     "test": "node --test tests/*.test.mjs"
   },
   "engines": {

@@ -7,14 +7,14 @@ import { fileURLToPath } from 'node:url';
 
 export function createStaticServer(directory) {
   const root = path.resolve(directory);
-  const types = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.json': 'application/json', '.webp': 'image/webp', '.svg': 'image/svg+xml', '.mp4': 'video/mp4' };
+  const types = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.json': 'application/json', '.webp': 'image/webp', '.svg': 'image/svg+xml', '.mp4': 'video/mp4', '.txt': 'text/plain; charset=utf-8', '.xml': 'application/xml; charset=utf-8' };
   return http.createServer(async (request, response) => {
     if (!['GET', 'HEAD'].includes(request.method)) { response.writeHead(405, { Allow: 'GET, HEAD' }); return response.end(); }
     try {
       const url = new URL(request.url, 'http://localhost');
       const relative = decodeURIComponent(url.pathname).replace(/^\/+/, '') || 'index.html';
       const file = path.resolve(root, relative);
-      const publicPath = ['index.html', 'styles.css', 'app.js', 'media-policy.js', 'listing-config.js'].includes(relative)
+      const publicPath = ['index.html', 'styles.css', 'app.js', 'share.js', 'media-policy.js', 'listing-config.js', 'robots.txt', 'sitemap.xml', 'indexnow-key.txt', 'property-summary.html'].includes(relative)
         || file.startsWith(path.join(root, 'assets') + path.sep);
       // Development should never publish the source listing or repository metadata.
       if (!file.startsWith(root + path.sep) || !publicPath || relative.split(/[\\/]/).some(segment => segment.startsWith('.') || ['basefiles', 'node_modules', 'tmp', 'scripts', 'tests'].includes(segment.toLowerCase()))) {

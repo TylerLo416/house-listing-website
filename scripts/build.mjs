@@ -1,10 +1,12 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import { preparePromotion } from './prepare-promotion.mjs';
 
 const root = process.cwd();
 const destination = path.resolve(root, 'dist');
 if (destination !== path.join(root, 'dist')) throw new Error('Invalid build destination');
-const files = ['index.html', 'styles.css', 'app.js', 'media-policy.js', 'listing-config.js'];
+await preparePromotion();
+const files = ['index.html', 'styles.css', 'app.js', 'share.js', 'media-policy.js', 'listing-config.js', 'robots.txt', 'sitemap.xml', 'indexnow-key.txt', 'property-summary.html'];
 const manifest = JSON.parse(await fs.readFile('assets/photos.json', 'utf8'));
 for (const photo of manifest) for (const width of [400, 800, 1600]) await fs.access(`assets/photos/${photo.id}-${width}.webp`);
 for (const quality of [1080, 720, 540]) await fs.access(`assets/video/tour-${quality}.mp4`);
