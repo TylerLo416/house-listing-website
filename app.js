@@ -12,6 +12,39 @@ if (Number.isFinite(listing.askingPrice) && listing.askingPrice > 0) {
 }
 $('#property-scope').textContent = listing.scopeNote;
 
+const phoneLink = $('.contact-phone');
+const phoneOptions = $('#phone-options');
+const mobileContact = matchMedia('(max-width: 800px)');
+function syncPhoneOptions() {
+  if (mobileContact.matches && typeof phoneOptions.showModal === 'function') {
+    phoneLink.setAttribute('aria-haspopup', 'dialog');
+    phoneLink.setAttribute('aria-controls', 'phone-options');
+  } else {
+    phoneLink.removeAttribute('aria-haspopup');
+    phoneLink.removeAttribute('aria-controls');
+    if (phoneOptions.open) phoneOptions.close();
+  }
+}
+syncPhoneOptions();
+mobileContact.addEventListener('change', syncPhoneOptions);
+phoneLink.addEventListener('click', event => {
+  if (!mobileContact.matches || typeof phoneOptions.showModal !== 'function'
+    || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+  event.preventDefault();
+  if (!phoneOptions.open) phoneOptions.showModal();
+});
+$('#close-phone-options').addEventListener('click', () => phoneOptions.close());
+phoneOptions.querySelectorAll('a').forEach(link => {
+  link.addEventListener('click', () => phoneOptions.close());
+});
+phoneOptions.addEventListener('click', event => {
+  if (event.target !== phoneOptions) return;
+  const bounds = phoneOptions.getBoundingClientRect();
+  if (event.clientX < bounds.left || event.clientX > bounds.right
+    || event.clientY < bounds.top || event.clientY > bounds.bottom) phoneOptions.close();
+});
+phoneOptions.addEventListener('close', () => phoneLink.focus({ preventScroll: true }));
+
 const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
 const motionPreference = matchMedia('(prefers-reduced-motion: reduce)');
 const policy = () => chooseMediaPolicy(connection, motionPreference.matches);

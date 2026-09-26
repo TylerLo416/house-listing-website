@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
-    <loc>https://7741greenlake.netlify.app/</loc>
-    <image:image><image:loc>https://7741greenlake.netlify.app/assets/photos/twilight-1-1600.webp</image:loc></image:image>
-    <image:image><image:loc>https://7741greenlake.netlify.app/assets/photos/acre-015-1600.webp</image:loc></image:image>
-    <image:image><image:loc>https://7741greenlake.netlify.app/assets/photos/acre-018-1600.webp</image:loc></image:image>
+    <loc>https://7741greenlake.com/</loc>
+    <image:image><image:loc>https://7741greenlake.com/assets/photos/twilight-1-1600.webp</image:loc></image:image>
+    <image:image><image:loc>https://7741greenlake.com/assets/photos/acre-015-1600.webp</image:loc></image:image>
+    <image:image><image:loc>https://7741greenlake.com/assets/photos/acre-018-1600.webp</image:loc></image:image>
   </url>
 </urlset>

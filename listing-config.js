@@ -1,6 +1,6 @@
 // Asking price from the Zillow and MLS sale listing.
 export const listing = {
-  siteUrl: 'https://7741greenlake.netlify.app/',
+  siteUrl: 'https://7741greenlake.com/',
   title: '7741 1st Avenue NE | Green Lake Seattle Home for Sale',
   address: '7741 1st Avenue NE',
   city: 'Seattle',
@@ -9,7 +9,6 @@ export const listing = {
   bedrooms: 4,
   bathrooms: 3,
   squareFeet: 2160,
-  yearBuilt: 1925,
   mlsNumber: '2581382',
   askingPrice: 1079000,
   scopeNote: 'Duplex / multi-family property · MLS #2581382',
