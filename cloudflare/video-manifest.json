@@ -1,0 +1,12 @@
+{
+  "/assets/video/tour-720.mp4": {
+    "key": "7741greenlake/tour-720-bf2f85821b2b4e6716a84a59970272320671816db39cffa1fc501d7bdf988716.mp4",
+    "size": 14343065,
+    "sha256": "bf2f85821b2b4e6716a84a59970272320671816db39cffa1fc501d7bdf988716"
+  },
+  "/assets/video/tour-540.mp4": {
+    "key": "7741greenlake/tour-540-bf2a9d5187d4a3bc180d88a9c460587fc2f012525733e07be92cf53ad96fda94.mp4",
+    "size": 7140817,
+    "sha256": "bf2a9d5187d4a3bc180d88a9c460587fc2f012525733e07be92cf53ad96fda94"
+  }
+}

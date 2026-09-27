@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://7741greenlake.netlify.app/sitemap.xml
+Sitemap: https://7741greenlake.com/sitemap.xml

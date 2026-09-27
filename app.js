@@ -1,4 +1,4 @@
-import { chooseMediaPolicy, nextLowerQuality, categories, filterPhotos, photoSource } from './media-policy.js';
+import { chooseMediaPolicy, nextLowerQuality, categories, filterPhotos, photoSource, videoSource } from './media-policy.js';
 import { listing } from './listing-config.js';
 
 const $ = selector => document.querySelector(selector);
@@ -11,6 +11,39 @@ if (Number.isFinite(listing.askingPrice) && listing.askingPrice > 0) {
   $('#asking-price').firstChild.textContent = `${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(listing.askingPrice)} `;
 }
 $('#property-scope').textContent = listing.scopeNote;
+
+const phoneLink = $('.contact-phone');
+const phoneOptions = $('#phone-options');
+const mobileContact = matchMedia('(max-width: 800px)');
+function syncPhoneOptions() {
+  if (mobileContact.matches && typeof phoneOptions.showModal === 'function') {
+    phoneLink.setAttribute('aria-haspopup', 'dialog');
+    phoneLink.setAttribute('aria-controls', 'phone-options');
+  } else {
+    phoneLink.removeAttribute('aria-haspopup');
+    phoneLink.removeAttribute('aria-controls');
+    if (phoneOptions.open) phoneOptions.close();
+  }
+}
+syncPhoneOptions();
+mobileContact.addEventListener('change', syncPhoneOptions);
+phoneLink.addEventListener('click', event => {
+  if (!mobileContact.matches || typeof phoneOptions.showModal !== 'function'
+    || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+  event.preventDefault();
+  if (!phoneOptions.open) phoneOptions.showModal();
+});
+$('#close-phone-options').addEventListener('click', () => phoneOptions.close());
+phoneOptions.querySelectorAll('a').forEach(link => {
+  link.addEventListener('click', () => phoneOptions.close());
+});
+phoneOptions.addEventListener('click', event => {
+  if (event.target !== phoneOptions) return;
+  const bounds = phoneOptions.getBoundingClientRect();
+  if (event.clientX < bounds.left || event.clientX > bounds.right
+    || event.clientY < bounds.top || event.clientY > bounds.bottom) phoneOptions.close();
+});
+phoneOptions.addEventListener('close', () => phoneLink.focus({ preventScroll: true }));
 
 const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
 const motionPreference = matchMedia('(prefers-reduced-motion: reduce)');
@@ -102,7 +135,7 @@ function startVideo(quality, play = true, message) {
   video.hidden = false;
   caption.hidden = true;
   mediaStatus.textContent = message || `Loading ${quality}p tour…`;
-  video.src = `assets/video/tour-${quality}.mp4`;
+  video.src = videoSource(quality);
   video.preload = 'auto';
   video.addEventListener('loadedmetadata', () => {
     if (version !== sourceVersion) return;

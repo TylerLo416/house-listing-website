@@ -7,6 +7,8 @@
   "scripts": {
     "dev": "node scripts/serve.mjs",
     "build": "node scripts/build.mjs",
+    "build:cloudflare": "node scripts/build.mjs --cloudflare",
+    "deploy": "npm run build:cloudflare && node scripts/deploy-cloudflare.mjs",
     "preview": "node scripts/serve.mjs dist",
     "media": "node scripts/prepare-media.mjs",
     "promotion": "node scripts/prepare-promotion.mjs",
@@ -17,8 +19,10 @@
     "node": ">=22"
   },
   "devDependencies": {
+    "@aws-sdk/client-s3": "^3.1135.0",
     "jsdom": "^30.0.1",
     "pdfjs-dist": "^6.3.289",
-    "sharp": "^0.35.4"
+    "sharp": "^0.35.4",
+    "wrangler": "^4.134.0"
   }
 }

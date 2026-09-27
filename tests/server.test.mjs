@@ -12,7 +12,7 @@ test('static hosting serves pages, MIME types and video byte ranges', async () =
     assert.match(await response.text(), /7741 Green Lake/);
     const photo = await fetch(`${base}/assets/photos/twilight-1-400.webp`);
     assert.equal(photo.headers.get('content-type'), 'image/webp');
-    for (const quality of [1080, 720, 540]) {
+    for (const quality of [720, 540]) {
       const range = await fetch(`${base}/assets/video/tour-${quality}.mp4`, { headers: { Range: 'bytes=0-1023' } });
       assert.equal(range.status, 206);
       assert.equal(range.headers.get('content-type'), 'video/mp4');
