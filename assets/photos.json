@@ -756,48 +756,6 @@
     "source": "ACRE -47.jpg"
   },
   {
-    "id": "acre-048",
-    "category": "bedrooms",
-    "alt": "Unfurnished room with hardwood floors",
-    "staged": false,
-    "width": 6000,
-    "height": 4000,
-    "bytes": {
-      "400": 8148,
-      "800": 29644,
-      "1600": 136072
-    },
-    "source": "ACRE -48.jpg"
-  },
-  {
-    "id": "acre-049",
-    "category": "bedrooms",
-    "alt": "Unfurnished room with hardwood floors",
-    "staged": false,
-    "width": 6000,
-    "height": 4000,
-    "bytes": {
-      "400": 6786,
-      "800": 25312,
-      "1600": 115900
-    },
-    "source": "ACRE -49.jpg"
-  },
-  {
-    "id": "acre-050",
-    "category": "bedrooms",
-    "alt": "Unfurnished room with hardwood floors",
-    "staged": false,
-    "width": 6000,
-    "height": 4000,
-    "bytes": {
-      "400": 6786,
-      "800": 24832,
-      "1600": 114714
-    },
-    "source": "ACRE -50.jpg"
-  },
-  {
     "id": "acre-052",
     "category": "bathrooms",
     "alt": "Bathroom with white subway tile and pedestal sink",
@@ -810,132 +768,6 @@
       "1600": 145448
     },
     "source": "ACRE -52.jpg"
-  },
-  {
-    "id": "acre-053",
-    "category": "bedrooms",
-    "alt": "Unfurnished bedroom and closet",
-    "staged": false,
-    "width": 6000,
-    "height": 4000,
-    "bytes": {
-      "400": 3698,
-      "800": 12340,
-      "1600": 54412
-    },
-    "source": "ACRE -53.jpg"
-  },
-  {
-    "id": "acre-054",
-    "category": "bedrooms",
-    "alt": "Unfurnished bedroom and closet",
-    "staged": false,
-    "width": 6000,
-    "height": 4000,
-    "bytes": {
-      "400": 6282,
-      "800": 24074,
-      "1600": 112104
-    },
-    "source": "ACRE -54.jpg"
-  },
-  {
-    "id": "acre-055",
-    "category": "bedrooms",
-    "alt": "Unfurnished bedroom and closet",
-    "staged": false,
-    "width": 6000,
-    "height": 4000,
-    "bytes": {
-      "400": 4274,
-      "800": 16790,
-      "1600": 85984
-    },
-    "source": "ACRE -55.jpg"
-  },
-  {
-    "id": "acre-056",
-    "category": "bedrooms",
-    "alt": "Unfurnished bedroom and closet",
-    "staged": false,
-    "width": 6000,
-    "height": 4000,
-    "bytes": {
-      "400": 4860,
-      "800": 16922,
-      "1600": 83726
-    },
-    "source": "ACRE -56.jpg"
-  },
-  {
-    "id": "acre-057",
-    "category": "bedrooms",
-    "alt": "Unfurnished bedroom and closet",
-    "staged": false,
-    "width": 6000,
-    "height": 4000,
-    "bytes": {
-      "400": 6788,
-      "800": 24308,
-      "1600": 107008
-    },
-    "source": "ACRE -57.jpg"
-  },
-  {
-    "id": "acre-058",
-    "category": "living",
-    "alt": "Bright additional living area",
-    "staged": false,
-    "width": 6000,
-    "height": 4000,
-    "bytes": {
-      "400": 8522,
-      "800": 30530,
-      "1600": 152648
-    },
-    "source": "ACRE -58.jpg"
-  },
-  {
-    "id": "acre-059",
-    "category": "living",
-    "alt": "Bright additional living area",
-    "staged": false,
-    "width": 6000,
-    "height": 4000,
-    "bytes": {
-      "400": 7160,
-      "800": 24688,
-      "1600": 110892
-    },
-    "source": "ACRE -59.jpg"
-  },
-  {
-    "id": "acre-060",
-    "category": "living",
-    "alt": "Bright additional living area",
-    "staged": false,
-    "width": 6000,
-    "height": 4000,
-    "bytes": {
-      "400": 8376,
-      "800": 30428,
-      "1600": 143870
-    },
-    "source": "ACRE -60.jpg"
-  },
-  {
-    "id": "acre-061",
-    "category": "living",
-    "alt": "Bright additional living area",
-    "staged": false,
-    "width": 5998,
-    "height": 3998,
-    "bytes": {
-      "400": 8336,
-      "800": 30588,
-      "1600": 145928
-    },
-    "source": "ACRE -61.jpg"
   },
   {
     "id": "acre-062",
@@ -992,62 +824,6 @@
       "1600": 174976
     },
     "source": "ACRE -65.jpg"
-  },
-  {
-    "id": "acre-066",
-    "category": "studio",
-    "alt": "Lower-level space with kitchenette and closets",
-    "staged": false,
-    "width": 6000,
-    "height": 4000,
-    "bytes": {
-      "400": 3328,
-      "800": 13018,
-      "1600": 89664
-    },
-    "source": "ACRE -66.jpg"
-  },
-  {
-    "id": "acre-067",
-    "category": "studio",
-    "alt": "Lower-level space with kitchenette and closets",
-    "staged": false,
-    "width": 6000,
-    "height": 4000,
-    "bytes": {
-      "400": 2488,
-      "800": 10560,
-      "1600": 92232
-    },
-    "source": "ACRE -67.jpg"
-  },
-  {
-    "id": "acre-068",
-    "category": "studio",
-    "alt": "Lower-level space with kitchenette and closets",
-    "staged": false,
-    "width": 5998,
-    "height": 3998,
-    "bytes": {
-      "400": 2202,
-      "800": 9752,
-      "1600": 101984
-    },
-    "source": "ACRE -68.jpg"
-  },
-  {
-    "id": "acre-069",
-    "category": "studio",
-    "alt": "Lower-level space with kitchenette and closets",
-    "staged": false,
-    "width": 6000,
-    "height": 4000,
-    "bytes": {
-      "400": 2148,
-      "800": 9698,
-      "1600": 94236
-    },
-    "source": "ACRE -69.jpg"
   },
   {
     "id": "acre-070",
@@ -1482,34 +1258,6 @@
       "1600": 153738
     },
     "source": "ACRE-102.jpg"
-  },
-  {
-    "id": "acre-103",
-    "category": "studio",
-    "alt": "Lower-level room and kitchenette",
-    "staged": false,
-    "width": 5981,
-    "height": 3982,
-    "bytes": {
-      "400": 3210,
-      "800": 11392,
-      "1600": 64570
-    },
-    "source": "ACRE-103.jpg"
-  },
-  {
-    "id": "acre-104",
-    "category": "studio",
-    "alt": "Lower-level room and kitchenette",
-    "staged": false,
-    "width": 5996,
-    "height": 3996,
-    "bytes": {
-      "400": 4126,
-      "800": 14918,
-      "1600": 80348
-    },
-    "source": "ACRE-104.jpg"
   },
   {
     "id": "acre-105",

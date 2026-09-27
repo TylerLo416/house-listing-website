@@ -2,8 +2,11 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { spawn } from 'node:child_process';
 import sharp from 'sharp';
+import { tourVideoUrl } from '../media-policy.js';
 
 const source = 'basefiles/photos';
+// Photos of unfurnished, empty rooms are left out of the website.
+const emptyRooms = new Set([48, 49, 50, 53, 54, 55, 56, 57, 58, 59, 60, 61, 66, 67, 68, 69, 103, 104].map(n => `acre-${String(n).padStart(3, '0')}`));
 await fs.mkdir('assets/photos', { recursive: true });
 await fs.mkdir('assets/video', { recursive: true });
 const files = (await fs.readdir(source, { recursive: true })).filter(file => /\.jpg$/i.test(file));
@@ -21,10 +24,7 @@ const descriptions = [
   [44, 44, 'bedrooms', 'Walk-in closet with shelving'],
   [45, 46, 'bedrooms', 'Bedroom with wood floors'],
   [47, 47, 'bedrooms', 'Bedroom closet'],
-  [48, 50, 'bedrooms', 'Unfurnished room with hardwood floors'],
   [51, 52, 'bathrooms', 'Bathroom with white subway tile and pedestal sink'],
-  [53, 57, 'bedrooms', 'Unfurnished bedroom and closet'],
-  [58, 61, 'living', 'Bright additional living area'],
   [62, 63, 'bathrooms', 'Bathroom with bathtub and vanity'],
   [64, 64, 'bedrooms', 'Closet beneath the pitched roof'],
   [65, 65, 'living', 'Window-side desk nook'],
@@ -42,7 +42,6 @@ const descriptions = [
   [95, 96, 'exterior', 'Separate lower-level entrance'],
   [97, 99, 'outdoor', 'Exterior landing and stairs'],
   [100, 102, 'living', 'Window-side desk nook and landing'],
-  [103, 104, 'studio', 'Lower-level room and kitchenette'],
   [105, 108, 'exterior', 'Aerial view of the house, decks and garden'],
 ];
 const staged = {
@@ -59,6 +58,7 @@ for (const file of files.sort((a, b) => a.localeCompare(b, undefined, { numeric:
   const isStaged = file.includes('Virtual Staging');
   const isTwilight = /^\d/.test(filename);
   const id = isStaged ? `staged-${n}` : isTwilight ? `twilight-${n}` : `acre-${String(n).padStart(3, '0')}`;
+  if (emptyRooms.has(id)) continue;
   const [, , category, alt] = isStaged ? [0, 0, ...staged[n]] : isTwilight
     ? [0, 0, n === 2 ? 'outdoor' : 'exterior', n === 2 ? 'Upper deck at twilight' : 'House exterior at twilight']
     : descriptions.find(([start, end]) => n >= start && n <= end);
@@ -74,7 +74,7 @@ for (const file of files.sort((a, b) => a.localeCompare(b, undefined, { numeric:
   }
   manifest.push({ id, category, alt, staged: isStaged, width: metadata.width, height: metadata.height, bytes: sizes, source: file.replaceAll('\\', '/') });
 }
-// Curated opening sequence; every supplied photograph remains available.
+// Curated opening sequence; every other included photograph follows.
 const featured = ['twilight-1', 'acre-015', 'acre-028', 'acre-041', 'acre-018', 'acre-092', 'acre-051', 'acre-045', 'acre-009', 'acre-025', 'acre-087', 'acre-031'];
 manifest.sort((a, b) => {
   const ai = featured.indexOf(a.id), bi = featured.indexOf(b.id);
@@ -84,14 +84,14 @@ await fs.writeFile('assets/photos.json', JSON.stringify(manifest, null, 2) + '\n
 console.log(`Prepared ${manifest.length} photos in three WebP sizes.`);
 
 if (!process.argv.includes('--photos-only')) {
-  for (const [height, crf, maxrate, bufsize] of [[1080, 23, '4500k', '9000k'], [720, 25, '2200k', '4400k'], [540, 27, '1000k', '2000k']]) {
+  // The 1080p tour is streamed from tourVideoUrl as supplied; only the lower qualities are encoded.
+  for (const [height, crf, maxrate, bufsize] of [[720, 25, '2200k', '4400k'], [540, 27, '1000k', '2000k']]) {
     const output = `assets/video/tour-${height}.mp4`;
     try { if ((await fs.stat(output)).size > 0) { console.log(`Keeping ${output}`); continue; } } catch {}
-    const input = `basefiles/videos/7741_1st_ave_ne,_seattle,_wa_98115_-_unbranded (${height}p).mp4`;
     const temporary = `assets/video/tour-${height}.pending.mp4`;
     console.log(`Encoding ${height}p tour…`);
     await new Promise((resolve, reject) => {
-      const child = spawn('ffmpeg', ['-hide_banner', '-loglevel', 'error', '-y', '-i', input, '-map', '0:v:0', '-map', '0:a?', '-c:v', 'libx264', '-preset', 'fast', '-crf', String(crf), '-maxrate', maxrate, '-bufsize', bufsize, '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-b:a', '96k', '-movflags', '+faststart', temporary], { stdio: 'inherit', windowsHide: true });
+      const child = spawn('ffmpeg', ['-hide_banner', '-loglevel', 'error', '-y', '-i', tourVideoUrl, '-map', '0:v:0', '-map', '0:a?', '-vf', `scale=-2:${height}`, '-c:v', 'libx264', '-preset', 'fast', '-crf', String(crf), '-maxrate', maxrate, '-bufsize', bufsize, '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-b:a', '96k', '-movflags', '+faststart', temporary], { stdio: 'inherit', windowsHide: true });
       child.on('error', reject);
       child.on('exit', code => code === 0 ? resolve() : reject(new Error(`ffmpeg exited ${code}`)));
     });

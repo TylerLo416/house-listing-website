@@ -1,4 +1,4 @@
-import { chooseMediaPolicy, nextLowerQuality, categories, filterPhotos, photoSource } from './media-policy.js';
+import { chooseMediaPolicy, nextLowerQuality, categories, filterPhotos, photoSource, videoSource } from './media-policy.js';
 import { listing } from './listing-config.js';
 
 const $ = selector => document.querySelector(selector);
@@ -135,7 +135,7 @@ function startVideo(quality, play = true, message) {
   video.hidden = false;
   caption.hidden = true;
   mediaStatus.textContent = message || `Loading ${quality}p tour…`;
-  video.src = `assets/video/tour-${quality}.mp4`;
+  video.src = videoSource(quality);
   video.preload = 'auto';
   video.addEventListener('loadedmetadata', () => {
     if (version !== sourceVersion) return;

@@ -33,3 +33,12 @@ export function photoSource(photo, width = 800) {
   if (!/^[a-z]+-\d+$/.test(photo.id) || ![400, 800, 1600].includes(width)) throw new Error('Invalid photo path');
   return `assets/photos/${photo.id}-${width}.webp`;
 }
+
+// The 1080p tour streams from the owner's media host; 720p and 540p are encoded from it and served from R2.
+export const tourVideoUrl = 'https://media.memowishcards.com/7741-1st-ave-ne-seattle-1080p.mp4';
+
+export function videoSource(quality) {
+  if (quality === '1080') return tourVideoUrl;
+  if (!['720', '540'].includes(quality)) throw new Error('Invalid video quality');
+  return `assets/video/tour-${quality}.mp4`;
+}

@@ -38,7 +38,7 @@ npm run deploy
 
 The command builds the public site, uploads missing video versions to the existing `property-videos` R2 bucket and deploys the `7741greenlake` Worker. `.env.example` lists the required local credential names. Actual `.env` values are ignored by Git, excluded from public assets and never configured as Worker runtime secrets.
 
-Cloudflare serves the pages and photos as static assets. The Worker streams video from R2 with byte-range support for playback and seeking. This preserves the 39.5 MiB 1080p video, which exceeds Cloudflare's 25 MiB static asset limit. A visitor downloads only the selected media and lazily loaded photos.
+Cloudflare serves the pages and photos as static assets. The 1080p tour streams directly from https://media.memowishcards.com/7741-1st-ave-ne-seattle-1080p.mp4 (set as `tourVideoUrl` in `media-policy.js`). The Worker streams the 720p and 540p versions from R2 with byte-range support for playback and seeking. A visitor downloads only the selected media and lazily loaded photos.
 
 For a self-contained local preview, use `npm run build` followed by `npm run preview`. Cloudflare uses the separate `dist-cloudflare/` output. Do not publish the repository root or `basefiles/`: the original MLS PDF includes broker-only and owner information.
 
@@ -67,14 +67,14 @@ Sources checked September 15, 2026:
 - **Buffering fallback:** In Auto, sustained loading/buffering steps down from 1080p → 720p → 540p → photos, including on browsers that do not expose network estimates. Video buffering and “Photos only” never reduce still-photo resolution.
 - **Manual controls:** Auto, 1080p, 720p, 540p, or Photos only. Changing quality preserves playback position. Native video controls provide pause, seek, volume and fullscreen. Photos only aborts the video request.
 - **Motion and autoplay:** The tour starts muted and inline when allowed. Reduced-motion preference suppresses autoplay. If autoplay is blocked, a play button is shown. Scrolling the tour offscreen or hiding the tab pauses it.
-- **Images:** All 117 supplied photographs are converted to 400px, 800px and 1600px WebP. Responsive images and lazy loading limit downloads; enlarged photos always use 1600px files. Five virtual staging images are labeled in cards and the viewer.
+- **Images:** 99 of the 117 supplied photographs are converted to 400px, 800px and 1600px WebP. Photos of unfurnished, empty rooms are excluded in `scripts/prepare-media.mjs`. Responsive images and lazy loading limit downloads; enlarged photos always use 1600px files. Five virtual staging images are labeled in cards and the viewer.
 - **Gallery:** Room categories, load-more pagination, a full-screen viewer, arrow-key navigation, touch swipes and focus restoration. Preferences persist only in the current browser tab's session.
 
 Connection quality is an estimate, not direct Wi-Fi signal measurement. Some browsers do not expose it; the buffering fallback and manual controls cover that case. See [MDN's Network Information documentation](https://developer.mozilla.org/en-US/docs/Web/API/NetworkInformation).
 
 ## Regenerate media
 
-Prepared files are included under `assets/`. To recreate them from `basefiles/`, install dependencies and make FFmpeg available on your PATH:
+Prepared files are included under `assets/`. To recreate them, install dependencies and make FFmpeg available on your PATH. Photos come from `basefiles/photos`; the 720p and 540p tours are encoded from the 1080p tour URL.
 
 ```sh
 npm run media
@@ -86,7 +86,7 @@ Photo-only rebuild:
 node scripts/prepare-media.mjs --photos-only
 ```
 
-The script keeps up-to-date WebP files and completed video encodes. To re-encode a video after replacing its original, remove only the corresponding `assets/video/tour-QUALITY.mp4` first. All video outputs use H.264/AAC with the MP4 metadata moved to the beginning for progressive streaming.
+The script keeps up-to-date WebP files and completed video encodes. To re-encode a video after changing the tour URL, remove only the corresponding `assets/video/tour-QUALITY.mp4` first. All video outputs use H.264/AAC with the MP4 metadata moved to the beginning for progressive streaming.
 
 `scripts/inspect-assets.mjs` extracts the source PDF and creates photo contact sheets in ignored `tmp/`; `scripts/render-listing.mjs` renders the relevant MLS pages. These are local inspection utilities, excluded from deployment.
 

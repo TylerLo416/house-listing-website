@@ -10,7 +10,7 @@ $1,079,000 | 4 bedrooms | 3 bathrooms | 2,160 sq ft
 
 Original fir and oak floors, an updated main kitchen with granite counters, two composite decks, a backyard and a detached garage. This duplex / multi-family property has separate entrances. Figures describe the whole property.
 
-Explore 117 photos and a video walkthrough, then contact the seller to arrange a showing.
+Explore 99 photos and a video walkthrough, then contact the seller to arrange a showing.
 
 MLS #2581382 · Listing courtesy of List4FlatFee.com, LLC.
 
@@ -40,7 +40,7 @@ $1,079,000 | 4 bedrooms | 3 bathrooms | 2,160 sq ft
 
 This duplex / multi-family property combines original details with an updated main kitchen, separate entrances, two composite decks and a detached garage. Bedroom, bathroom and square-footage figures describe the whole property.
 
-The property website has 117 photos, a video tour and direct seller contact for showing requests. Share with anyone exploring homes in Green Lake.
+The property website has 99 photos, a video tour and direct seller contact for showing requests. Share with anyone exploring homes in Green Lake.
 
 MLS #2581382 · Listing courtesy of List4FlatFee.com, LLC.
 
@@ -76,7 +76,7 @@ https://7741greenlake.com/?utm_source=craigslist&utm_medium=social&utm_campaign=
 
 Explore this duplex / multi-family property in Seattle’s Green Lake neighborhood. $1,079,000 | 4 bedrooms | 3 bathrooms | 2,160 sq ft. Whole-property figures.
 
-See all 117 photos and contact the seller to schedule a showing using the property website below.
+See all 99 photos and contact the seller to schedule a showing using the property website below.
 
 MLS #2581382 · Listing courtesy of List4FlatFee.com, LLC.
 
@@ -105,7 +105,7 @@ Use the supplied property media unchanged. No generated interiors or unlabelled 
 - Exterior: https://7741greenlake.com/assets/photos/twilight-1-1600.webp
 - Living room: https://7741greenlake.com/assets/photos/acre-015-1600.webp
 - Deck: https://7741greenlake.com/assets/photos/acre-018-1600.webp
-- Full tour: https://7741greenlake.com/assets/video/tour-1080.mp4
+- Full tour: https://media.memowishcards.com/7741-1st-ave-ne-seattle-1080p.mp4
 - Printable summary: https://7741greenlake.com/property-summary.html
 
 ## Publication notes

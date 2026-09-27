@@ -1,17 +1,12 @@
 {
-  "/assets/video/tour-1080.mp4": {
-    "key": "7741greenlake/tour-1080-274d631389b32b0599c714868688d0d3f1a75b209f9eaa08d878ff55beaeaf1f.mp4",
-    "size": 41405133,
-    "sha256": "274d631389b32b0599c714868688d0d3f1a75b209f9eaa08d878ff55beaeaf1f"
-  },
   "/assets/video/tour-720.mp4": {
-    "key": "7741greenlake/tour-720-69d8fc5fc9ac1d9bd2014985b240965ba56909340f2674bcf1699e0ee5a5fe06.mp4",
-    "size": 18070351,
-    "sha256": "69d8fc5fc9ac1d9bd2014985b240965ba56909340f2674bcf1699e0ee5a5fe06"
+    "key": "7741greenlake/tour-720-bf2f85821b2b4e6716a84a59970272320671816db39cffa1fc501d7bdf988716.mp4",
+    "size": 14343065,
+    "sha256": "bf2f85821b2b4e6716a84a59970272320671816db39cffa1fc501d7bdf988716"
   },
   "/assets/video/tour-540.mp4": {
-    "key": "7741greenlake/tour-540-0dc1b403e079664a15f70f681004e5dec22e60b8e492b2ac622eb9636bdfd287.mp4",
-    "size": 8988136,
-    "sha256": "0dc1b403e079664a15f70f681004e5dec22e60b8e492b2ac622eb9636bdfd287"
+    "key": "7741greenlake/tour-540-bf2a9d5187d4a3bc180d88a9c460587fc2f012525733e07be92cf53ad96fda94.mp4",
+    "size": 7140817,
+    "sha256": "bf2a9d5187d4a3bc180d88a9c460587fc2f012525733e07be92cf53ad96fda94"
   }
 }

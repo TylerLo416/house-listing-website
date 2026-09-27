@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
-import { chooseMediaPolicy, nextLowerQuality, filterPhotos, categories, photoSource } from '../media-policy.js';
+import { chooseMediaPolicy, nextLowerQuality, filterPhotos, categories, photoSource, videoSource } from '../media-policy.js';
 
 test('good and unknown connections start at 1080p', () => {
   assert.equal(chooseMediaPolicy().quality, '1080');
@@ -28,7 +28,8 @@ test('buffering steps down through video qualities to photos', () => {
 });
 test('every supplied photo has valid categories and three real WebP files', async () => {
   const photos = JSON.parse(await fs.readFile(new URL('../assets/photos.json', import.meta.url)));
-  assert.equal(photos.length, 117);
+  assert.equal(photos.length, 99);
+  for (const id of ['acre-048', 'acre-057', 'acre-066', 'acre-104']) assert.ok(!photos.some(photo => photo.id === id), `Empty-room photo ${id} is listed`);
   assert.equal(new Set(photos.map(photo => photo.id)).size, photos.length);
   assert.equal(filterPhotos(photos, 'staged').length, 5);
   assert.equal(filterPhotos(photos, 'all').length, photos.length);
@@ -43,4 +44,10 @@ test('every supplied photo has valid categories and three real WebP files', asyn
       assert.equal(data.length, photo.bytes[width]);
     }
   }
+});
+test('1080p streams from the supplied tour URL; lower qualities are self-hosted', () => {
+  assert.equal(videoSource('1080'), 'https://media.memowishcards.com/7741-1st-ave-ne-seattle-1080p.mp4');
+  assert.equal(videoSource('720'), 'assets/video/tour-720.mp4');
+  assert.equal(videoSource('540'), 'assets/video/tour-540.mp4');
+  assert.throws(() => videoSource('photos'));
 });

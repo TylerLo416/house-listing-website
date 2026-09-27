@@ -114,7 +114,7 @@ test('Save-Data preserves sharp photos and waits for the visitor to start a vide
 test('unknown bandwidth starts at 1080p and sustained buffering falls back through 720p, 540p and photos', async () => {
   const app = await setup();
   try {
-    assert.match(app.video.src, /tour-1080.mp4$/);
+    assert.equal(app.video.src, 'https://media.memowishcards.com/7741-1st-ave-ne-seattle-1080p.mp4');
     app.stall();
     assert.match(app.video.src, /tour-720.mp4$/);
     assert.equal(app.document.querySelector('#low-data'), null);
@@ -189,7 +189,7 @@ test('a connection change respects manually selected quality and switches Auto t
     app.change('#media-quality', '1080');
     app.network.saveData = true;
     app.network.dispatchEvent(new app.window.Event('change'));
-    assert.match(app.video.src, /tour-1080.mp4$/);
+    assert.equal(app.video.src, 'https://media.memowishcards.com/7741-1st-ave-ne-seattle-1080p.mp4');
     app.change('#media-quality', 'auto');
     assert.equal(app.video.hasAttribute('src'), false);
   } finally { app.close(); }

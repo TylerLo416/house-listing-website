@@ -19,12 +19,12 @@ function fixture() {
       },
     },
   };
-  const fetch = (headers = {}, method = 'GET', path = '/assets/video/tour-1080.mp4') =>
+  const fetch = (headers = {}, method = 'GET', path = '/assets/video/tour-720.mp4') =>
     worker.fetch(new Request(`https://7741greenlake.com${path}`, { headers, method }), env);
   return { fetch, env, calls };
 }
 
-test('Cloudflare streams all three videos and serves ordinary files through assets', async () => {
+test('Cloudflare streams the self-hosted videos and serves ordinary files through assets', async () => {
   const { fetch, calls } = fixture();
   for (const [path, video] of Object.entries(videos)) {
     const response = await fetch({}, 'GET', path);
